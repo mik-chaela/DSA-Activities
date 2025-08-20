@@ -8,9 +8,9 @@ typedef struct {
 } List;
 
 List initializeList ();
-List insertPosition (List L, int pos, int data);
-List insertSorted (List L, int data);
-//List deletePosition (List L, int pos);
+List insertPosition (List L, int pos, int data); //Insert data at a desired index
+List insertSorted (List L, int data); //Insert data in a sorted manner
+List deletePosition (List L, int pos); //Deletes a data at a given position
 void displayList(List L);
 
 int main (){
@@ -19,14 +19,17 @@ int main (){
     L = insertPosition(L, 0, 10);
     L = insertPosition(L, 1, 20);
     L = insertPosition(L, 2, 30);
-    //L = insertPosition(L, 2, 35);
+    L = insertPosition(L, 2, 35);
     L = insertPosition(L, 3, 40);
-
+    printf("List After Inserting Data into Desired Positions\n");
     displayList (L);
     
-    L = insertSorted (L, 12);
+    L = insertSorted(L, 12);
+    printf("List After Inserting Data Sorted\n");
+    displayList (L);
     
-    //L = deletePosition (L, 2);
+    L = deletePosition (L, 3);
+    printf("List After Deleting Position\n");
 
     return 0;
 }
@@ -44,7 +47,10 @@ List initializeList (){
 }
 
 List insertPosition(List L, int pos, int data){
-	
+    if (pos < 0 || pos > L.count || L.count >= MAX) {
+        return L;
+    }
+
     for (int i = 0; i <= L.count; i++){
         if(i == pos){
         	if (L.elem[i] != -1){
@@ -55,23 +61,31 @@ List insertPosition(List L, int pos, int data){
             L.count++;
         }
     }
+
     return L;
 }
 
 List insertSorted (List L, int data){
-	int key, j; 
-	
-	for(int i = 1; i < L.count; i++) {
-		key = L.elem[i];
-		j = i - 1;
-		
-		while (j >= 0 && L.elem[j] > key){
-			L.elem[]
-		}
-	}	
+	if (L.count >= MAX) {
+        return L; 
+    }
+
+    int pos = 0;
+
+    while (pos < L.count && L.elem[pos] < data){
+        pos++;
+    }
+
+    for (int i = L.count; i > pos; i--){
+        L.elem[i] = L.elem[i - 1];
+    }
+
+    L.elem[pos] = data;
+    L.count++;
+
+    return L;
 }
 
-/*
 List deletePosition (List L, int pos){
 	
 	for (int i = 0; i < L.count; i++){
@@ -80,10 +94,8 @@ List deletePosition (List L, int pos){
 		}
 	}
 }
-*/
 
 void displayList(List L){
-    printf("Data found in the List:\n");
     for (int i = 0; i < L.count; i++){
         printf("Index %d: %d\n", i, L.elem[i]);
     }
