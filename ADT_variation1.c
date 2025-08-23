@@ -123,8 +123,13 @@ int locate (List L, int data){
 }
 
 void displayList(List L){ //loop through the list and display the elements with its respective positions
-    for (int i = 0; i < L.count; i++){
-        printf("Index %d: %d\n", i, L.elem[i]);
+    printf("[ ");
+    for(int i = 0; i < L.count; i++){
+        printf("%d", L.elem[i]); 
+        if(i < L.count - 1){
+            printf(", ");
+        }
     }
-	printf("Total Data Found: %d\n\n", L.count); //displays the total count in the list
+    printf(" ]\n");
+    printf("Total Count: %d\n\n", L.count); //displays the total count in the list
 }
