@@ -134,7 +134,7 @@ int locate (List L, int data){
 }
 
 List resize (List L)    {
-    L.elemPtr = realloc(L.elemPtr, 10 * sizeof(int));
+    L.elemPtr = realloc(L.elemPtr, (L.max * 2) * sizeof(int));
     if(L.elemPtr == NULL){
         printf("Memory reallocation failed.\n");
         makeNULL(L);
