@@ -17,6 +17,8 @@ void insertLast(List* list, int data);
 void insertPos (List* list, int data, int index);
 void deleteStart (List* list);
 void deleteLast (List* list);
+void deletePos (List* list, int index);
+int retrieve (List* list, int index);
 Node* createNode (int data);
 void display (List* list);
 void empty (List* list);
@@ -60,6 +62,15 @@ int main () {
             case 5:
                 deleteLast(L);
                 break;
+			case 6:
+				printf("Enter position to delete: ");
+				scanf("%d", &pos);
+				deletePos (L, pos);
+				break;
+			case 7:
+				printf("Enter position to retrieve number: ");
+				scanf("%d", &pos);
+				retrieve(L, pos);
             case 10:
                 empty (L);
                 return 0;
@@ -190,6 +201,28 @@ void deleteLast (List* list){
     free(current->next);
     current->next = NULL;
     list->count--;
+}
+
+void deletePos (List* list, int index){
+	//Index is 0, then call removeStart() function
+	if(index == 0){
+		deleteStart(list);
+		return;
+	}
+
+	Node* current = list->head; //Declaring current variable and set it to the list's head
+	for(int i = 0; i < index - 1; i++){
+		current = current->next; //Iterate thru the list index - 1 times
+	}
+
+	Node* temp = current->next; //Declaring temp and set it to current->next
+	current->next = temp->next; //Current->next is set to temp->next
+	free(temp); //Freeing up the space of temp
+	list->count--; //Decrement the list's count
+}
+
+int retrieve (List* list, int index){
+
 }
 
 List* initialize (){
