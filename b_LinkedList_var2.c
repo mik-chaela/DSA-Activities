@@ -17,6 +17,9 @@ void insertLast(List* list, int data);
 void insertPos (List* list, int data, int index);
 void deleteStart (List* list);
 void deleteLast (List* list);
+void deletePos (List* list, int index);
+int retrieve (List* list, int index);
+int locate (List* list, int data);
 Node* createNode (int data);
 void display (List* list);
 void empty (List* list);
@@ -41,11 +44,13 @@ int main () {
                 printf("Enter number: ");
                 scanf("%d", &Data);
                 insertFirst(L, Data);
+				display(L);
                 break;
             case 2:
                 printf("Enter number: ");
                 scanf("%d", &Data);
                 insertLast(L, Data);
+				display(L);
                 break;
             case 3:
                 printf("Enter number to insert: ");
@@ -53,21 +58,55 @@ int main () {
                 printf("Enter position: ");
                 scanf("%d", &pos);
                 insertPos(L, Data, pos);
+				display(L);
                 break;
             case 4:
                 deleteStart (L);
+				display(L);
                 break;
             case 5:
                 deleteLast(L);
+				display(L);
                 break;
+			case 6:
+				printf("Enter position to delete: ");
+				scanf("%d", &pos);
+				deletePos (L, pos);
+				display(L);
+				break;
+			case 7:
+				printf("Enter position to retrieve number: ");
+				scanf("%d", &pos);
+
+				int found = retrieve(L, pos);
+				if (found != -1) {
+					printf("Data found in position %d is: %d\n\n", pos, found);
+				} else {
+					printf("No data retrieved\n\n");
+				}
+				break;
+			case 8:
+				printf("Enter data to locate: ");
+				scanf("%d", &Data);
+
+				int location = locate(L, Data);
+				if(location != -1){
+					printf("Data %d is found in position: %d\n\n", Data, location);
+				} else {
+					printf("No data found in that position\n\n");
+				}
+				break;
+			case 9:
+				display(L);
+				break;
             case 10:
                 empty (L);
+				printf("List has been emptied\n");
                 return 0;
             default:
                 printf("Invalid choice.\n");
                 break;
         }
-        display(L);
     }
 
     return 0;
@@ -190,6 +229,58 @@ void deleteLast (List* list){
     free(current->next);
     current->next = NULL;
     list->count--;
+}
+
+void deletePos (List* list, int index){
+	//Index is 0, then call removeStart() function
+	if(index == 0){
+		deleteStart(list);
+		return;
+	}
+
+	Node* current = list->head; //Declaring current variable and set it to the list's head
+	for(int i = 0; i < index - 1; i++){
+		current = current->next; //Iterate thru the list index - 1 times
+	}
+
+	Node* temp = current->next; //Declaring temp and set it to current->next
+	current->next = temp->next; //Current->next is set to temp->next
+	free(temp); //Freeing up the space of temp
+	list->count--; //Decrement the list's count
+}
+
+int retrieve (List* list, int index){
+	//Checking if index is greater than the count
+	if (index > list->count) {
+		printf("Invalid index.\n");
+		return -1;
+	}
+
+	Node* current = list->head; //Declaring current and setting it to the list's head
+	for(int i = 0; i < index; i++){
+		current = current->next; //Iterating index times, moving current forward
+	}
+
+	return current->data; //Return the data in the current
+}
+
+int locate (List* list, int data){
+	//Checking if the list is empty
+	if (list->head == NULL){
+		printf("List is empty.\n");
+		return -1;
+	}
+
+	Node* current = list->head; //Declaring current and set it to the list's head
+	int index = 0;
+	while (current != NULL){
+		if(current->data == data){
+			return index;
+		}
+		current = current->next;
+		index++;
+	}
+	return -1;
 }
 
 List* initialize (){
