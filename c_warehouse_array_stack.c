@@ -14,6 +14,7 @@ bool isEmpty (Stack* s);
 void push (Stack* s, int value);
 int pop (Stack* s);
 int peek(Stack* s);
+bool exists (Stack* s, int value);
 void initializeStack (Stack* s);
 void display(Stack* s);
 
@@ -51,12 +52,21 @@ int main(){
                 break;
             case 2:
                 popped = pop(s);
-                printf("Container %d popped successfully.\n", popped);
+                if (popped != -1){
+                    printf("Container %d popped successfully.\n", popped);
+                } else {
+                    break;
+                }
                 break;
             case 3:
                 printf("Enter container ID to check: ");
                 scanf("%d", &ID);
-                
+                bool find = exists (s, ID);
+                if (find) {
+                    printf("Container %d exists in a stack.\n\n");
+                } else {
+                    printf("Container %d does not exist in any stack.\n\n");
+                }
                 break;
             case 4:
                 display(s);
@@ -95,10 +105,20 @@ int pop (Stack* s){
             return value;
         }
     }
-    printf("All stacks are empty.\n");
+    printf("Error: All stacks are empty. Cannot pop container\n");
     return -1;
 }
 
+bool exists (Stack* s, int value){
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j <= s[i].top; j++){
+            if(s[i].items[j] == value){
+                return true;
+            }
+        }
+    }
+    return false;
+}
 void initializeStack (Stack* s){
     s->top = -1;
 }
