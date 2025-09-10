@@ -74,12 +74,35 @@ int pop (Stack* S){
     return S->items[(S->top)--];
 }
 
+void display (Stack* S){
+	if(isEmpty(S)){
+        printf("Stack is empty.\n");  
+        return;
+    }
+    
+    Stack* tempStack = initialize(tempStack);
+
+    printf("Items: [ ");
+    while(!isEmpty(S)){
+        push(tempStack, pop(S));
+    }
+	
+	while(!isEmpty(tempStack)){
+		int val = pop(tempStack);
+        printf("%d ", val);
+		push(S, val);
+	}
+    
+    printf("]\nTop: %d\n\n", S->top);
+}
+
+/*
 void display (Stack* S, int popped){
     if(isEmpty(S)){
         printf("Stack is empty.\n");  
         return;
     }
-/*    
+    
     Stack* temp = initialize(temp);
 
     printf("Items: [ ");
@@ -97,8 +120,8 @@ void display (Stack* S, int popped){
     }
 
     printf("\nTop: %d\n\n", S->top);
-
-*/
+	
+	//Different Logic
     printf("Items: [ ");
     for(int i = 0; i <= S->top; i++){
         printf("%d", S->items[i]);        
@@ -115,5 +138,5 @@ void display (Stack* S, int popped){
     }
     printf(" ]\n");
     printf("Top: %d\n\n", S->top);
-
 }
+*/
