@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define MAX 5
+#define MAX_STACKS 3
 
 typedef struct{
     int items[MAX];
@@ -19,9 +20,9 @@ void initializeStack (Stack* s);
 void display(Stack* s);
 
 int main(){
-    Stack s[3];
+    Stack s[MAX_STACKS];
     
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < MAX_STACKS; i++){
         initializeStack(&s[i]);
     }
 
@@ -42,7 +43,7 @@ int main(){
                 printf("Enter container ID to push: ");
                 scanf("%d", &ID);
 
-                for(int i = 0; i < 3; i++){
+                for(int i = 0; i < MAX_STACKS; i++){
                     if(!isFull(&s[i])){
                         push(&s[i], ID);
                         break;
@@ -110,7 +111,7 @@ int pop (Stack* s){
 }
 
 bool exists (Stack* s, int value){
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < MAX_STACKS; i++){
         for(int j = 0; j <= s[i].top; j++){
             if(s[i].items[j] == value){
                 return true;
@@ -124,7 +125,7 @@ void initializeStack (Stack* s){
 }
 
 void display(Stack* s){
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < MAX_STACKS; i++){
         printf("---Stack %d---\n", i+1);
 
         if(isEmpty(&s[i])){
