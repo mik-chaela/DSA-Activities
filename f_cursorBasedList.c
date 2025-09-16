@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#define MAX 4
+#define MAX 5
 
 typedef struct {
   int elem;
@@ -21,6 +21,7 @@ void insertFirst(int* L, VHeap* V, int elem);
 void insertLast(int* L, VHeap* V, int elem);
 void insertSorted(int* L, VHeap* V, int elem);
 void delete (int* L, VHeap* V, int elem);
+void deleteAllOccurrence (int* L, VHeap* V, int elem);
 void display(int L, VHeap V);
 
 int main(){
@@ -40,12 +41,17 @@ int main(){
     insertLast(&L, &V, 10);
     display(L, V);
 
-    printf("\nInserting Sorted Number 8...\n");
+    printf("\nInserting Sorted Number 8 and 5...\n");
     insertSorted(&L, &V, 8);
+    insertSorted(&L, &V, 5 );
     display(L, V);
 
-    printf("\nDeleting Number 1...\n");
-    delete(&L, &V, 1);
+    printf("\nDeleting Number 10...\n");
+    delete(&L, &V, 10);
+    display(L, V);
+
+    printf("\nDeleting All Occurences of Number 5...\n");
+    deleteAllOccurrence(&L, &V, 5);
     display(L, V);
    
     return 0;
@@ -142,6 +148,20 @@ void delete (int* L, VHeap* V, int elem){
         deallocSpace(V, temp);
     } else {
         printf("Number not found.\n");
+    }
+}
+
+void deleteAllOccurrence (int* L, VHeap* V, int elem){
+    int* trav = L;
+
+    while(*trav != -1){
+        if(V->H[*trav].elem == elem){
+            int temp = *trav;
+            *trav = V->H[*trav].next;
+            deallocSpace(V, temp);
+        } else{
+            trav = &V->H[*trav].next;
+        }
     }
 }
 
