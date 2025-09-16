@@ -15,6 +15,7 @@ List* initialize ();
 void insertFirst (List* list, int data);
 void insertLast(List* list, int data);
 void insertPos (List* list, int data, int index);
+void insertSorted (List* list, int data);
 void deleteStart (List* list);
 void deleteLast (List* list);
 void deletePos (List* list, int index);
@@ -31,23 +32,25 @@ int main () {
 
     while (1){
         printf("Which process do you want today?\n"
-               "(1) Insert First\t(6) Delete at Position\n"
-               "(2) Insert Last\t\t(7) Retrieve Number\n"
-               "(3) Insert at Position\t(8) Locate Position\n"
-               "(4) Delete Start\t(9) Display Current List\n"
-               "(5) Delete Last\t\t(10) Exit Program\n\n");
+               "(1) Insert First\t(7) Delete at Position\n"
+               "(2) Insert Last\t\t(8) Retrieve a Number\n"
+               "(3) Insert at Position\t(9) Locate Position\n"
+               "(4) Insert Sorted\t(10) Display Current List\n"
+               "(5) Delete First\t(11) Exit Program\n"
+                "(6) Delete Last\n\n");
+
         printf("Enter choice: ");
         scanf("%d", &choice);
 
         switch(choice){
             case 1:
-                printf("Enter number: ");
+                printf("Enter number to insert first: ");
                 scanf("%d", &Data);
                 insertFirst(L, Data);
 				display(L);
                 break;
             case 2:
-                printf("Enter number: ");
+                printf("Enter number to insert last: ");
                 scanf("%d", &Data);
                 insertLast(L, Data);
 				display(L);
@@ -61,20 +64,26 @@ int main () {
 				display(L);
                 break;
             case 4:
+                printf("Enter number to insert sorted: ");
+                scanf("%d", &Data);
+                insertSorted(L, Data);
+                display(L);
+                break;
+            case 5:
                 deleteStart (L);
 				display(L);
                 break;
-            case 5:
-                deleteLast(L);
+			case 6:
+				deleteLast(L);
 				display(L);
                 break;
-			case 6:
+			case 7:
 				printf("Enter position to delete: ");
 				scanf("%d", &pos);
 				deletePos (L, pos);
 				display(L);
 				break;
-			case 7:
+			case 8:
 				printf("Enter position to retrieve number: ");
 				scanf("%d", &pos);
 
@@ -85,7 +94,7 @@ int main () {
 					printf("No data retrieved\n\n");
 				}
 				break;
-			case 8:
+			case 9:
 				printf("Enter data to locate: ");
 				scanf("%d", &Data);
 
@@ -93,13 +102,13 @@ int main () {
 				if(location != -1){
 					printf("Data %d is found in position: %d\n\n", Data, location);
 				} else {
-					printf("No data found in that position\n\n");
+					printf("Data %d is not found.\n\n", Data);
 				}
 				break;
-			case 9:
-				display(L);
-				break;
             case 10:
+                display(L);
+				break;
+            case 11:
                 empty (L);
 				printf("List has been emptied\n");
                 return 0;
@@ -192,6 +201,25 @@ void insertPos (List* list, int data, int index){
     list->count++; //Increment the list's count
 }
 
+void insertSorted (List* list, int data){
+    Node* newNode = createNode(data);
+
+    if(list->head == NULL || list->head->data >= data){
+        newNode->next = list->head;
+        list->head = newNode;
+        list->count++;
+        return;
+    }
+
+    Node* trav = list->head;
+    while (trav->next != NULL && trav->next->data < data){
+        trav = trav->next;
+    }
+    newNode->next = trav->next;
+    trav->next = newNode;
+    list->count++;
+}
+
 void deleteStart (List* list){
     if(list->head == NULL){
         printf("List is empty. Nothing to delete.\n");
@@ -277,10 +305,11 @@ int locate (List* list, int data){
 		if(current->data == data){
 			return index;
 		}
+        index++;
 		current = current->next;
-		index++;
 	}
-	return -1;
+
+    return -1;
 }
 
 List* initialize (){
