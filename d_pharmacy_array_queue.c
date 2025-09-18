@@ -144,7 +144,7 @@ int dequeue (Queue* q){
 
     return frontValue;
 }
-
+/*
 void display (Queue* q){
     if(isEmpty(q)){
         printf("Queue is empty.");
@@ -154,4 +154,28 @@ void display (Queue* q){
     for (int i = q->front; i <= q->rear && i < MAX; i++){
         printf("%d ", q->list.items[i]);
     }
+}
+*/
+
+void display (Queue* q){
+    if(isEmpty(q)){
+        printf("Queue is empty.");
+        return;
+    }
+
+    Queue* tempQueue = initialize();
+    int elem;
+
+    while(!isEmpty(q)){
+        elem = dequeue(q);
+        printf("%d ", elem);
+        enqueue(tempQueue, elem);
+    }
+
+    while (!isEmpty(tempQueue)){
+        elem = dequeue(tempQueue);
+        enqueue(q, elem);
+    }
+
+    free(tempQueue);
 }

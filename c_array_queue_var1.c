@@ -99,15 +99,26 @@ void display (Queue* q){
         return;
     }
 
+    Queue* tempQueue = initialize();
+    int elem;
+
     printf("Items: [ ");
-    
-    for(int i = 0; i <= q->rear && i < MAX; i++) {
-        printf("%d, ", q->list.items[i]);
+    while(!isEmpty(q)){
+        elem = dequeue(q);
+        printf("%d ", elem);
+        enqueue(tempQueue, elem);
     }
+
+    while (!isEmpty(tempQueue)){
+        elem = dequeue(tempQueue);
+        enqueue(q, elem);
+    }
+
     printf("... ]\n");
     printf("Count: %d\n", q->list.count);
     printf("Front: %d\n", q->front);
     printf("Rear: %d\n\n", q->rear);
+    free(tempQueue);
 }
 
 int front(Queue* q){
