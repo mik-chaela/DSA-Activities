@@ -23,6 +23,7 @@ Queue* initialize();
 bool isEmpty(Queue* q);
 Node* createNode (int studID, char* studName, int vip);
 void enqueueStudent (Queue* q, int studID, char* studName, int vip);
+Student dequeue (Queue* q);
 void displayLine (Queue* q);
 
 int main(){
@@ -31,7 +32,6 @@ int main(){
     int choice, studID, vipp;
     char studName[30];
     char vip;
-
 
     while(1){
         printf("Welcome to USC Library Queueing System!\n");
@@ -62,6 +62,17 @@ int main(){
                 enqueueStudent(line, studID, studName, vipp);
                 printf("\nRequest Submitted! Please wait for your name to be called.\n\n");
                 break;
+            case 2: {
+                Student dequeued = dequeue(line);
+                if(dequeued.studentID != -1){
+                    printf("\nCalling Student Number: %d\n Name: %s\n", dequeued.studentID, dequeued.name);
+                    printf("You may now enter the library. Have fun reading!\n\n");
+                } else {
+                    printf("Nothing to call here.\n\n");
+                }
+                
+                break;
+            }
             case 3:
                 displayLine(line);
                 break;
@@ -117,6 +128,23 @@ void enqueueStudent (Queue* q, int studID, char* studName, int vip){
     }
 }
 
+Student dequeue (Queue* q){
+    Student empty = {0, "", -1};
+    if(isEmpty(q)){
+        printf("\nQueue is empty. ");
+        return empty;
+    }
+    Node* temp = q->front;
+    Student frontStudent = temp->student;
+
+    q->front = q->front->next;
+    if(q->front == NULL){
+        q->rear = NULL;
+    }
+    free(temp);
+    return frontStudent;
+}
+
 void displayLine (Queue* q){
     if(isEmpty(q)){
         printf("\nNo one is currently queueing.\n\n");
@@ -129,9 +157,9 @@ void displayLine (Queue* q){
         printf("Student Name: %s\n", current->student.name);
         printf("VIP? ");
         if(current->student.isVIP == 1){
-            printf("YES\n");
+            printf("Yes\n");
         } else {
-            printf("NO\n");
+            printf("No\n");
         }
         current = current->next;
     }

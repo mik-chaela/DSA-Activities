@@ -70,6 +70,11 @@ int insertArticle(VHeap* V, int* L, Article article, int index){
 
 // viewArticles
 void viewArticles(VHeap V, int L){
+    if(L == -1){
+        printf("The knowledge base is empty.\n");
+        return;
+    }
+    
     printf("\n--- List of Articles ---\n");
     for(int i = L; i != -1; i = V.H[i].next){
         printf("ID: %d | Title: %s\n", V.H[i].article.id, V.H[i].article.title);
@@ -86,7 +91,7 @@ void searchArticle(VHeap V, int L, int id){
     if (trav != -1){
         printf("\n--- Article Found ---\n");
         printf("ID: %d\nTitle: %s\n", V.H[trav].article.id, V.H[trav].article.title);
-        printf("Content: %s.\n", V.H[trav].article.content);
+        printf("Content: %s\n", V.H[trav].article.content);
         printf("---------------------\n\n");
     } else {
         printf("Article with ID %d not found.\n\n", id);
@@ -114,6 +119,6 @@ int deleteArticle(VHeap* V, int* L, int id){
         dealloc(V, temp);
         printf("Article with ID %d deleted successfully.\n\n", id);
     } else {
-        printf("Article not found.\n\n");
+        printf("Article with ID %d not found.\n\n", id);
     }
 }

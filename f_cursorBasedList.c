@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#define MAX 5
+#define MAX 10
 
 typedef struct {
   int elem;
@@ -20,6 +20,7 @@ void deallocSpace(VHeap* V, int index);
 void insertFirst(int* L, VHeap* V, int elem);
 void insertLast(int* L, VHeap* V, int elem);
 void insertSorted(int* L, VHeap* V, int elem);
+void insertPos(int* L, VHeap* V, int elem, int pos);
 void delete (int* L, VHeap* V, int elem);
 void deleteAllOccurrence (int* L, VHeap* V, int elem);
 void display(int L, VHeap V);
@@ -44,6 +45,10 @@ int main(){
     printf("\nInserting Sorted Number 8 and 5...\n");
     insertSorted(&L, &V, 8);
     insertSorted(&L, &V, 5 );
+    display(L, V);
+
+    printf("\nInserting 4 at Position 3...\n");
+    insertPos(&L, &V, 4, 3);
     display(L, V);
 
     printf("\nDeleting Number 10...\n");
@@ -106,6 +111,26 @@ void insertLast(int* L, VHeap* V, int elem){
         }
 	} else {
         printf("No space available.\n");
+    }
+}
+
+void insertPos(int* L, VHeap* V, int elem, int pos){
+    int newCell = allocSpace(V);
+    if(newCell != -1){
+        V->H[newCell].elem = elem;
+        V->H[newCell].next = -1;
+
+        int prev = *L;
+        int count = 0;
+        while (count < pos - 1 && prev != -1){
+            prev = V->H[prev].next;
+            count++;
+        }
+        V->H[newCell].next = V->H[prev].next;
+        V->H[prev].next = newCell;
+
+    } else {
+        printf("No space available\n");
     }
 }
 

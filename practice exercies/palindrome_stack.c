@@ -27,42 +27,6 @@ int main(){
 
     printf("Palindrome? %s", (isPalindrome(palindrome)) ? "Yes!" : "No!");
 }
-/*
-
-bool isPalindrome(char palindrome[]){
-    // implement here!!
-    Stack Stack1, Stack2;
-    int numLetters = strlen(palindrome);
-
-    initStack(&Stack1);
-    initStack(&Stack2);
-
-    for(int i = 0 ; i < numLetters; i++){
-        Push(&Stack1, palindrome[i]);
-    }
-
-    for(int i = 0 ; i < numLetters/2; i++){
-        Push(&Stack2, palindrome[i]);
-    }
-
-    if(numLetters % 2 != 0){
-        Pop(&Stack1);
-    }
-    
-    while(!isEmpty(Stack2)){
-        char c1 = Top(Stack2);
-        Pop(&Stack2);
-        char c2 = Top(Stack1);
-        Pop(&Stack1);
-
-        if(c1 != c2){
-            return false;
-        }
-    }
-
-    return true;
-}
-*/
 
 bool isPalindrome(char palindrome[]){
     Stack Stack1, Stack2;
