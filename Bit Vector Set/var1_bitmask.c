@@ -1,6 +1,6 @@
 /* 
 Variation 1 - Bitmask (char holding int value)
-This is the most common and space efficient way to impletement a bit vector set. An unsigned char 
+This is the most common and space efficient way to implement a bit vector set. An unsigned char 
 (or int) is used, and elements are added by setting the corresponding bit using the bitwise OR operator
 */
 #include <stdio.h>
