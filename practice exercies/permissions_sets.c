@@ -81,26 +81,31 @@ int main() {
 // Sets the bit at permIndex to 1
 void grantPermission(PermissionWord* user, int permIndex) {
     // TODO: Implement bitwise OR operation
-    *user |= permIndex;
+    *user |= (1 << permIndex);
     
 }
 
 // Clears the bit at permIndex (sets to 0)
 void revokePermission(PermissionWord* user, int permIndex) {
     // TODO: Implement bitwise AND with NOT mask
-    *user &= ~permIndex;
+    *user &= ~(1 << permIndex);
 }
 
 // Returns true if the bit at permIndex is 1
 bool hasPermission(PermissionWord user, int permIndex) {
     // TODO: Implement bitwise AND check
-    return false;
+    return (user & (1 << permIndex)) != 0;
 }
 
 // Counts number of 1 bits (permissions granted)
 int countPermissions(PermissionWord user) {
     // TODO: Loop and count bits set to 1
-    return 0;
+    int count = 0;
+    while (user){
+        count += user & 1;
+        user >>= 1;
+    }
+    return count;
 }
 
 // Prints all 10 bits (from bit 9 down to bit 0)
