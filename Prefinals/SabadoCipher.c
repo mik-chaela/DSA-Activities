@@ -1,9 +1,39 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int* encodeString(char string[]);
-short int* arrayToBitmask(int arr[]);
-void displayBitPattern(int arr[]);
+int* encodeString(char string[]){
+	int* bitArray = (int*)malloc(64 * sizeof(int));
+	int i, j, k = 0;
+
+	for(i = 0; i < 8; i++){
+		unsigned char ch = string[i];
+		for(j = 7; j >= 0; j--){
+			bitArray[k++] = (ch >> j) & 1;
+		}
+	}
+	return bitArray;
+}
+
+short int* arrayToBitmask(int arr[]){
+	short int *maskArray = (short int*)malloc(4 * sizeof(short int));
+	int i, j, index = 0;
+
+	for(i = 0; i < 4; i++){
+		short int value = 0;
+		for(j = 0; j < 16; j++){
+			value = (value << i) | arr[index++];
+		}
+		maskArray[i] = value;
+	}
+	return maskArray;
+}
+
+void displayBitPattern(int arr[]){
+	for(int i = 0; i < 64; i++){
+		printf("%d", arr[i]);
+		if((i + 1) % 8 == 0) printf(" ");
+	}
+}
 
 int main(){
     char string[9]={'E','A','R','R','I','N','G','S','\0'};
