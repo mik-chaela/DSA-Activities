@@ -29,6 +29,50 @@ void cleanup_fetched_results(char **results);
 void print_content(const char *url, const char *content);
 void run_test_case(HashTable *cache, int test_id);
 
+void init_cache(HashTable *table){
+    for(int i = 0; i < HASH_BUCKETS; i++){
+        table->buckets[i] = NULL;
+    }
+}
+
+char *lookup_cache(HashTable *table, const char *key){
+    unsigned int index = hash(key);
+    CacheEntry *current = table->buckets[index];
+
+    while(current != NULL){
+        if(strcmp(current->url, key) == 0){
+            return current->content;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+bool insert_cache(HashTable *table, const char *key){
+    unsigned int index = hash(key);
+    CacheEntry *current = table->buckets[index];
+
+    while (current != NULL){
+        if(strcmp(current->url, key) == 0){
+            return true;
+        }
+        current = current->next;
+    }
+
+    char *fetched = simulate_web_request(key);
+    if(fetched == NULL){
+        return false;
+    }
+
+    CacheEntry *newEntry = (CacheEntry*)malloc(sizeof(CacheEntry));
+    newEntry->url = strdup(key);
+    newEntry->content = fetched;
+    newEntry->next = table->buckets[index];
+
+    table->buckets[index] = newEntry;
+    return true;
+}
+
 /**
  * @brief Simple hash function (DJB2) to generate an index for the key (URL).
  * @param str The input URL string.
