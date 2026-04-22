@@ -37,6 +37,19 @@ void displayList(List A);                //Displays the list. Calls displayStude
 void deleteElem(List *A, char ID[]);     //Deletes the element bearing the given ID if the element is found; otherwise
                                               //    Display "Element with ID ___ is not found"
 
+void deleteAllCourse(List *A, char crs[]);  //Delete all occurrences of the given course   //For Task 3
+
+//void insertFirstUnique(List *A, studtype S);  //Insert the given elements record at the first position of the list if the given record
+                                              //  does not yet exist in the list; otherwise insertion is not possible and an error 
+                                              //  message is displayed "Element with ID number ___ already exists in the list"
+                                              //  Note: Elements are uniquely identified through the ID     //Task 4
+
+//studtype findRetElem(List A, char ID[]);     //Find the element bearing the given ID from the given list and 
+                                             //  return the element record bearing the given ID. If element does not exist
+											            //  return a dummy element with "XXXX" , 0, and '\0' values for string, integer, and 
+											            //  character fields respectively.           
+                                             //For Task 5 
+
 /*****************************************************************
  * Function Definitions                                          *
  *****************************************************************/
@@ -82,8 +95,7 @@ void displayList(List A)
 void initList(List *A)
 {
 	//Complete this function 
-   A->count = 0;
-	
+   A->count = 0;	
 }
 
 void insertLast(List *A, studtype S)   
@@ -103,10 +115,36 @@ void deleteElem(List *A, char ID[])
 	//Complete this function
    int i;
    for(i = 0; i < A->count && strcmp (A->studs[i].ID, ID) != 0; i++);
-   if(i < A->count){
-       
-
+   if (i < A->count){
+      A->count--;
+      for(int x = i; x < A->count; x++){
+         A->studs[x] = A->studs[x+1];
+      }
+      
+   } else {
+      printf("\n\nElement with ID %s is not found", ID);
    }
 }    
 
+//----- For Task 3 -----	
+void deleteAllCourse(List *A, char crs[]) 
+{
+	//Complete this function
+   int i, cnt = 0;
+   for(int i = 0; i < A->count; i++){
 
+   }
+}
+/*
+//----- For Task 4 -----
+void insertFirstUnique(List *A, studtype S)
+{
+	//Complete this function
+}
+
+//----- For Task 5 -----
+studtype findRetElem(List A, char ID[])
+{
+	//Complete this function
+}
+   */

@@ -36,9 +36,18 @@ void displayList(List A);                 //Displays the list. Calls displayStud
 void deleteElem(List *A, char ID[]);     //Deletes the element bearing the given ID if the element is found; otherwise
                                          // Display "Element with ID ___ is not found"
 
-void deleteAllCourse (List* A, char course[]); //Deletes all occurrence of records bearing the given course                                        
-void insertFirstIfUnique (List* A, studtype S); //Inserts a data at the first of the list if unique
-                                                //Display error message "Cannot insert. Data is found on the list"
+void deleteAllCourse(List *A, char crs[]);  //Delete all occurrences of the given course   //For Task 3
+
+void insertFirstUnique(List *A, studtype S);  //Insert the given elements record at the first position of the list if the given record
+                                              //  does not yet exist in the list; otherwise insertion is not possible and an error 
+                                              //  message is displayed "Element with ID number ___ already exists in the list"
+                                              //  Note: Elements are uniquely identified through the ID     //Task 4
+                                              
+studtype findRetElem(List A, char ID[]);     //Find the element bearing the given ID from the given list and 
+                                             //  return the element record bearing the given ID. If element does not exist
+											            //  return a dummy element with "XXXX" , 0, and '\0' values for string, integer, and 
+											            //  character fields respectively.           
+                                             //For Task 5 
 
 /*****************************************************************
  * Function Definitions                                          *
@@ -98,7 +107,7 @@ void insertLast(List *A, studtype S)
       newNode->link = NULL;
       *trav = newNode;
    } else {
-      printf("Memory Allocation Error. Cannot insert Element with ID %s\n", S.ID);
+      printf("\n\nMemory Allocation Error. Cannot insert Element with ID %s", S.ID);
    }
 
 }   
@@ -117,21 +126,52 @@ void deleteElem(List *A, char ID[])
    }
 }    
 
-void deleteAllCourse (List* A, char course[])
+//----- For Task 3 -----	
+void deleteAllCourse(List *A, char crs[]) 
 {
-   List* trav;
-   for(trav = A; *trav != NULL; ){
-      if (strcmp((*trav)->stud.course, course) == 0){
-         List temp = *trav;
-         *trav = temp->link;
+	//Complete this function
+   List* ptr; 
+   for(ptr = A; *ptr != NULL;){
+      if(strcmp((*ptr)->stud.course, crs) == 0){
+         List temp = *ptr;
+         *ptr = temp->link;
          free(temp);
       } else {
-         trav = &(*trav)->link;
+         ptr = &(*ptr)->link;
       }
    }
 }
 
-void insertFirstIfUnique (List* A, studtype S)
+//----- For Task 4 -----
+void insertFirstUnique(List *A, studtype S)
 {
+	//Complete this function
+   List trav;
+   for(trav = *A; trav != NULL && strcmp (trav->stud.ID, S.ID) != 0; trav = trav->link);
+   if(trav == NULL){
+      List new = (List)malloc(sizeof(struct node));
+      if(new != NULL){
+         new->stud = S;
+         new->link = *A;
+         *A = new;
+      } else {
+         printf("\n\nMemory Allocation Error. Cannot insert Element with ID %s", S.ID);
+      }
+   } else {
+      printf("\n\nElement with ID number %s already exists in the list", S.ID);
+   }
+}
 
+//----- For Task 5 -----
+studtype findRetElem(List A, char ID[])
+{
+	//Complete this function
+   List trav;
+   studtype dummy = {"XXXX", {"XXXX", '\0', "XXXX"}, "XXXX", 0}; 
+   for(trav = A; trav != NULL && strcmp (trav->stud.ID, ID) != 0; trav = trav->link);
+   if(trav != NULL){
+      return trav->stud;
+   } else {
+      return dummy;
+   }
 }
